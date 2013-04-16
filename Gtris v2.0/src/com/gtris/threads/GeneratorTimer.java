@@ -41,7 +41,7 @@ public class GeneratorTimer extends TimerTask{
 			 //Fix the problem with the concurrency
 			 if(first.getY() != second.getY()){
 				 second.setY(first.getY());
-				 System.out.println("Changing value!!!");
+				 //System.out.println("Changing value!!!");
 			 }
 			 
 		}

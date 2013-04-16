@@ -281,14 +281,14 @@ public final class GamePanel extends JPanel{
 		firstLoad = true;
 	}
 	/**
-	 * Check the value in minutes and grow level if is necesary
+	 * Check the value in minutes and grow level if is necessary
 	 */
 	private void growLevel(){
 		if((generatorTimer.getSeconds()/60) == UP_LEVEL_TIME){
 			generatorTimer.cancel();
 			generatorTimer = new GeneratorTimer(this);
 			delay-=250;
-			System.out.println(delay);
+			//System.out.println(delay);
 			timer.schedule(generatorTimer, 0 , delay);
 			factory.getScore().minutePlayed();
 			if(finalStage == currentLevel)
@@ -298,7 +298,7 @@ public final class GamePanel extends JPanel{
 		}
 	}
 	/**
-	 * Excecute when the top element in the list fall in the ground
+	 * Execute when the top element in the list fall in the ground
 	 * @param aux element in the air list
 	 * @param real instance in a matrix
 	 */

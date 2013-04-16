@@ -44,8 +44,14 @@
 	<sound id="pause">
 		com/gtris/resource/pause.mid
 	</sound>
-	<sound id="explode">
+	<sound id="block">
 		com/gtris/resource/explode.wav
+	</sound>
+	<sound id="yoshi">
+		com/gtris/resource/block.wav
+	</sound>
+	<sound id="explode">
+		com/gtris/resource/yoshi.wav
 	</sound>
 	
 </config>
