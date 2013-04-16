@@ -63,6 +63,8 @@ public final class GamePanel extends JPanel{
 	
 	private String textStatus;
 	
+	private boolean firstLoad;
+	
 	
 	public com.gtris.models.Cursor cursor;//Can't create a getter and setter
 	
@@ -76,6 +78,7 @@ public final class GamePanel extends JPanel{
 		cursor = new com.gtris.models.Cursor();
         onAir = new CopyOnWriteArrayList<>();
         textStatus = "start";
+        firstLoad = true;
 	}
 	/**
 	 * This method init the thread game
@@ -120,6 +123,10 @@ public final class GamePanel extends JPanel{
 		if(isStarted() && !isPaused()){
 			drawMatrix(g2d);
 			drawFigure(g2d);
+			if(firstLoad){
+				factory.loadBlocksRandom();
+				firstLoad = false;
+			}
 			try {
 				repaintMatrix(g2d);
 			} catch (GameOverException e) {
@@ -243,6 +250,7 @@ public final class GamePanel extends JPanel{
 		generatorTimer = null;
 		started = false;
 		textStatus = "start";
+		firstLoad = true;
 	}
 	/**
 	 * Check the value in minutes and grow level if is necesary
