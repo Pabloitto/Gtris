@@ -25,7 +25,7 @@ public class GameCoreImpl implements Runnable{
             }
         }catch(InterruptedException e){
         	this.aThis.repaint();
-            System.out.println("Thread fail!!!");
+            //System.out.println("Thread fail!!!");
         }
     }
     

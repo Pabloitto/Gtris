@@ -100,7 +100,7 @@ public final class GamePanel extends JPanel{
 				onAir.clear();
 				factory.setScore(new Score());
 				factory.init();
-				SoundManager.getInstance().playSound("stage1" , true);
+				SoundManager.getInstance().playSound(getLevelStage() , true);
 				started = true;
 				textStatus = "pause";
 				startDate = new Date();
@@ -110,13 +110,13 @@ public final class GamePanel extends JPanel{
 					generatorTimer = null;
 					paused = true;
 					textStatus = "resume";
-					SoundManager.getInstance().stopSound("stage1");
+					SoundManager.getInstance().stopSound(getLevelStage());
 					pauseDate = new Date();
 					
 				}else{
 					paused = false;
 					textStatus = "pause";
-					SoundManager.getInstance().playSound("stage1" , true);
+					SoundManager.getInstance().playSound(getLevelStage() , true);
 					startDate = new Date(startDate.getTime() + (new Date().getTime() - pauseDate.getTime()));
 				}
 				SoundManager.getInstance().playSound("pause" , false);
@@ -165,6 +165,8 @@ public final class GamePanel extends JPanel{
 		g2d.drawString("Score : " + factory.getScore().getCurrentScore(), factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE / 2);
 		g2d.drawString("Press Enter to  "+ textStatus, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE);	
 		g2d.drawString("Time played : " + time, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 2);
+		g2d.drawString("Level : " + currentLevel, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 3);
+			
 	}
 	private String getGameTime(){
 		if(startDate == null)
@@ -268,7 +270,7 @@ public final class GamePanel extends JPanel{
 	 */
 	private void gameOver(){
 		gameThread.interrupt();
-		SoundManager.getInstance().stopSound("stage1");
+		SoundManager.getInstance().stopSound(getLevelStage());
 		factory.init();
 		onAir.clear();
 		currentLevel = 1;
@@ -293,7 +295,9 @@ public final class GamePanel extends JPanel{
 			factory.getScore().minutePlayed();
 			if(finalStage == currentLevel)
 				return;
+			SoundManager.getInstance().stopSound(getLevelStage());
 			currentLevel++;
+			SoundManager.getInstance().playSound(getLevelStage(),true);
 			background = new ImageIcon(getClass().getClassLoader().getResource(levels.get(getLevelStage()))).getImage();
 		}
 	}

@@ -34,23 +34,29 @@ public class SoundManager {
          clip.loop(Clip.LOOP_CONTINUOUSLY);
 		return clip;
 	}
-	public void playSound(String song){
+	public void playSound(final String song){
 		Clip currentSong  = null;
-		try {
-			currentSong = init(songs.get(song));
-			songsPlayed.put(song, currentSong);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		currentSong.start();
+			try {
+				currentSong = init(songs.get(song));
+				songsPlayed.put(song, currentSong);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			currentSong.start();
 	}
-	public void playSound(String song , boolean repeatForever){
-		playSound(song);
-		if(repeatForever){
-			songsPlayed.get(song).loop(Clip.LOOP_CONTINUOUSLY);
-		}else{
-			songsPlayed.get(song).loop(0);
-		}
+	public void playSound(final String song , final boolean repeatForever){
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				playSound(song);
+				if(repeatForever){
+					songsPlayed.get(song).loop(Clip.LOOP_CONTINUOUSLY);
+				}else{
+					songsPlayed.get(song).loop(0);
+				}
+			}
+		});
+		t.start();
 	}
 	public void stopSound(String song){
 		Clip currentSong  = songsPlayed.get(song);
