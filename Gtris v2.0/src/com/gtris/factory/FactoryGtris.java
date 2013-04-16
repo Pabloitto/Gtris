@@ -215,10 +215,9 @@ public class FactoryGtris {
 		}
 	}
 	public void loadBlocksRandom(){
-		int b = Utilities.getRandomNumber(1, 4);
 		Figure f;
 		for(int i=0; i<matrix.length ; i++){
-			for(int j=(matrix[i].length - b);j<matrix[i].length;j++){
+			for(int j=(matrix[i].length - Utilities.getRandomNumber(1, 4));j<matrix[i].length;j++){
 				f = matrix[i][j];
 				ColorFigure c = ColorFigure.getRandom();
 				f.setImage(getSpecificImage(c.toString()));
