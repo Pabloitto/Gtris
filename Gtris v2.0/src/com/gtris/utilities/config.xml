@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <config>
 	<background id="stage1">
-		com/gtris/resource/stage-final.jpg
+		com/gtris/resource/stage1.jpg
 	</background>
 	<background id="stage2">
-		com/gtris/resource/stage1.jpg
+		com/gtris/resource/stage2.gif
 	</background>
 	<background id="stage3">
 		com/gtris/resource/stage3.jpg
 	</background>
 	<background id="stage4">
-		com/gtris/resource/stage2.gif
+		com/gtris/resource/stage-final.jpg
 	</background>
 	
 	<figure id="blue">
