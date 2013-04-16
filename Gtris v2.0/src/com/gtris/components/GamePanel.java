@@ -110,7 +110,7 @@ public final class GamePanel extends JPanel{
 					generatorTimer = null;
 					paused = true;
 					textStatus = "resume";
-					SoundManager.getInstance().stopSound(getLevelStage());
+					SoundManager.getInstance().stopSound(getLevelStage(), false);
 					pauseDate = new Date();
 					
 				}else{
@@ -270,7 +270,7 @@ public final class GamePanel extends JPanel{
 	 */
 	private void gameOver(){
 		gameThread.interrupt();
-		SoundManager.getInstance().stopSound(getLevelStage());
+		SoundManager.getInstance().stopSound(getLevelStage() , true);
 		factory.init();
 		onAir.clear();
 		currentLevel = 1;
@@ -295,7 +295,7 @@ public final class GamePanel extends JPanel{
 			factory.getScore().minutePlayed();
 			if(finalStage == currentLevel)
 				return;
-			SoundManager.getInstance().stopSound(getLevelStage());
+			SoundManager.getInstance().stopSound(getLevelStage() , true);
 			currentLevel++;
 			SoundManager.getInstance().playSound(getLevelStage(),true);
 			background = new ImageIcon(getClass().getClassLoader().getResource(levels.get(getLevelStage()))).getImage();

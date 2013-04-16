@@ -215,12 +215,18 @@ public class FactoryGtris {
 				}	
 			}
 		}
+		cleanOriginNode();
+	}
+	private void cleanOriginNode(){
 		for(int i=0; i<matrix.length ; i++){
 			for(int j=0;j<matrix[i].length;j++){
 				matrix[i][j].setOrigin(null);
 			}
 		}
 	}
+	/**
+	 * This method load the initial blocks in screen
+	 */
 	public void loadBlocksRandom(){
 		Figure f;
 		for(int i=0; i<matrix.length ; i++){
