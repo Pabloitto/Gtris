@@ -33,13 +33,19 @@
 	</figure>
 	
 	<sound id="stage1">
-		com/gtris/resource/tetrisb.mid
+		com/gtris/resource/jefe.mid
 	</sound>
 	<sound id="stage2">
 		com/gtris/resource/islandYoshi.mid
 	</sound>
+	<sound id="stage3">
+		com/gtris/resource/tetrisb.mid
+	</sound>
 	<sound id="pause">
 		com/gtris/resource/pause.mid
+	</sound>
+	<sound id="explode">
+		com/gtris/resource/explode.wav
 	</sound>
 	
 </config>

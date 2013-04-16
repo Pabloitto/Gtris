@@ -11,6 +11,7 @@ import com.gtris.enums.ColorFigure;
 import com.gtris.enums.ControlAlignment;
 import com.gtris.models.Figure;
 import com.gtris.models.Score;
+import com.gtris.sound.SoundManager;
 import com.gtris.utilities.Utilities;
 /**
  * Blocks Factory
@@ -150,6 +151,7 @@ public class FactoryGtris {
 					this.score.removePice();
 				}
 				toCheck.clear();
+				SoundManager.getInstance().playSound("explode", false);
 				break;
 			}
 			
