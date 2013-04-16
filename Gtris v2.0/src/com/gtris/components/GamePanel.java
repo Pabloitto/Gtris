@@ -24,7 +24,11 @@ import com.gtris.sound.SoundManager;
 import com.gtris.threads.GameCoreImpl;
 import com.gtris.threads.GeneratorTimer;
 import com.gtris.utilities.Utilities;
-
+/**
+ * Class represent the board game 
+ * @author Pablo
+ *
+ */
 public final class GamePanel extends JPanel{
 
 	private static final long serialVersionUID = -8207110468263963436L;
