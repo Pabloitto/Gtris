@@ -48,6 +48,8 @@ public class SoundManager {
 		playSound(song);
 		if(repeatForever){
 			songsPlayed.get(song).loop(Clip.LOOP_CONTINUOUSLY);
+		}else{
+			songsPlayed.get(song).loop(0);
 		}
 	}
 	public void stopSound(String song){

@@ -6,7 +6,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -51,7 +54,7 @@ public final class GamePanel extends JPanel{
 	
 	private final String KEY_STAGE = "stage";
 	
-	private final int UP_LEVEL_TIME = 1;
+	private final int UP_LEVEL_TIME = 2;
 	
 	private int currentLevel;
 	
@@ -65,6 +68,11 @@ public final class GamePanel extends JPanel{
 	
 	private boolean firstLoad;
 	
+	private Date startDate;
+	
+	private Date pauseDate;
+	
+	private String time;
 	
 	public com.gtris.models.Cursor cursor;//Can't create a getter and setter
 	
@@ -79,6 +87,7 @@ public final class GamePanel extends JPanel{
         onAir = new CopyOnWriteArrayList<>();
         textStatus = "start";
         firstLoad = true;
+        time = "00:00";
 	}
 	/**
 	 * This method init the thread game
@@ -94,6 +103,7 @@ public final class GamePanel extends JPanel{
 				SoundManager.getInstance().playSound("stage1" , true);
 				started = true;
 				textStatus = "pause";
+				startDate = new Date();
 			}else{
 				if(!isPaused()){
 					generatorTimer.cancel();
@@ -101,12 +111,15 @@ public final class GamePanel extends JPanel{
 					paused = true;
 					textStatus = "resume";
 					SoundManager.getInstance().stopSound("stage1");
+					pauseDate = new Date();
+					
 				}else{
 					paused = false;
 					textStatus = "pause";
 					SoundManager.getInstance().playSound("stage1" , true);
+					startDate = new Date(startDate.getTime() + (new Date().getTime() - pauseDate.getTime()));
 				}
-				SoundManager.getInstance().playSound("pause");
+				SoundManager.getInstance().playSound("pause" , false);
 			}
 	}
 
@@ -144,12 +157,26 @@ public final class GamePanel extends JPanel{
 				g2d.drawRect(cursor.getX(), cursor.getY(), cursor.getWidth(), cursor.getHeight());
 			}
 			g2d.drawImage(cursor.getImage(), cursor.getX() ,cursor.getY() , cursor.getWidth(), cursor.getHeight(),this);
+			time = getGameTime();
 		}else if(isPaused()){
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("Paused!!!", factory.getWidth() / 2, factory.getHeight() /2 );
 		}
 		g2d.drawString("Score : " + factory.getScore().getCurrentScore(), factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE / 2);
-		g2d.drawString("Press Enter to  "+ textStatus, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE);
+		g2d.drawString("Press Enter to  "+ textStatus, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE);	
+		g2d.drawString("Time played : " + time, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 2);
+	}
+	private String getGameTime(){
+		if(startDate == null)
+			return "";
+		
+		long difference = new Date().getTime() - startDate.getTime();
+		
+		Calendar referenceDate = Calendar.getInstance();
+		
+		referenceDate.setTime(new Date(difference));
+		
+		return new SimpleDateFormat("mm:ss").format(referenceDate.getTime());
 	}
 	/**
 	 * Paint the block falling
@@ -222,8 +249,9 @@ public final class GamePanel extends JPanel{
 				newPosition.setColor(colorOld);
 				cursorPosition.setImage(newImage);
 				cursorPosition.setColor(colorNew);
-				factory.searchFigureValid();
 		}
+		factory.searchFigureValid();
+		
 	}
 	/**
 	 * Verify if  we can active the cursor for move blocks
@@ -259,13 +287,14 @@ public final class GamePanel extends JPanel{
 		if((generatorTimer.getSeconds()/60) == UP_LEVEL_TIME){
 			generatorTimer.cancel();
 			generatorTimer = new GeneratorTimer(this);
-			delay-=50;
+			delay-=250;
+			System.out.println(delay);
 			timer.schedule(generatorTimer, 0 , delay);
+			factory.getScore().minutePlayed();
 			if(finalStage == currentLevel)
 				return;
 			currentLevel++;
 			background = new ImageIcon(getClass().getClassLoader().getResource(levels.get(getLevelStage()))).getImage();
-			factory.getScore().minutePlayed();
 		}
 	}
 	/**

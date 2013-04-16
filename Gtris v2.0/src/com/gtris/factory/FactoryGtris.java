@@ -128,7 +128,7 @@ public class FactoryGtris {
 	private void tetrisAnalizer(int x , int y){
 		
 		Figure nodeIni = this.matrix[x][y];
-		
+			
 		if(nodeIni.getImage() == null)
 			return;
 		
@@ -211,6 +211,11 @@ public class FactoryGtris {
 						break;
 					}
 				}	
+			}
+		}
+		for(int i=0; i<matrix.length ; i++){
+			for(int j=0;j<matrix[i].length;j++){
+				matrix[i][j].setOrigin(null);
 			}
 		}
 	}
