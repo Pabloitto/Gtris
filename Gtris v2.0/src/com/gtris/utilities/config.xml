@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<config>
+	<background id="stage1">
+		com/gtris/resource/stage-final.jpg
+	</background>
+	<background id="stage2">
+		com/gtris/resource/stage1.jpg
+	</background>
+	<background id="stage3">
+		com/gtris/resource/stage3.jpg
+	</background>
+	<background id="stage4">
+		com/gtris/resource/stage2.gif
+	</background>
+	
+	<figure id="blue">
+		com/gtris/resource/blue.png
+	</figure>
+	<figure id="cursor">
+		com/gtris/resource/cursor.png
+	</figure>
+	<figure id="green">
+		com/gtris/resource/green.png
+	</figure>
+	<figure id="pink">
+		com/gtris/resource/pink.png
+	</figure>
+	<figure id="red">
+		com/gtris/resource/red.png
+	</figure>
+	<figure id="yellow">
+		com/gtris/resource/yellow.png
+	</figure>
+	
+	<sound id="stage1">
+		com/gtris/resource/tetrisb.mid
+	</sound>
+	<sound id="stage2">
+		com/gtris/resource/islandYoshi.mid
+	</sound>
+	<sound id="pause">
+		com/gtris/resource/pause.mid
+	</sound>
+	
+</config>
