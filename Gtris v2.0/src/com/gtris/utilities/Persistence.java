@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URISyntaxException;
 /**
  * Class for persist the high score game
  * @author pablo
@@ -33,8 +34,8 @@ public class Persistence {
 	public <T> void  save(T o){
 		try {
 			if(fileOut == null && objOut == null){
-				file = new File(this.name+".data");
-				if(file.exists()){
+				file = new File(getPath() + "/" + this.name+".data");
+				if(file != null){
 					fileOut = new FileOutputStream(file);
 					objOut = new ObjectOutputStream (fileOut);
 				}
@@ -53,8 +54,7 @@ public class Persistence {
 		T readObject = null;
 		try {
 			if(objIn == null){
-				//InputStream stream = getStoreFile();
-				file = new File(this.name+".data");
+				file = new File(getPath() + "/" + this.name+".data");
 				if(file != null && file.exists()){
 					objIn = new ObjectInputStream(new FileInputStream(file));
 				}
@@ -68,5 +68,19 @@ public class Persistence {
 			e.printStackTrace();
 		}
 		return readObject;
+	}
+	public String getPath(){
+		String url = null;
+		try {
+			url = getClass()
+					.getProtectionDomain()
+					.getCodeSource()
+					.getLocation()
+					.toURI().getPath();
+			url = url.substring(0, url.lastIndexOf("/"));
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return url;
 	}
 }
