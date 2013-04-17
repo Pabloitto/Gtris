@@ -23,6 +23,7 @@ public class FactoryGtris {
 	private static FactoryGtris myFactory;
 	private HashMap<String,String> figures;
 	private Score score;
+	private Score highScore;
 	private Figure[][] matrix;
 	public static final int SIZE_FIGURE = 32;
 	public static final int ROWS = 12;
@@ -283,6 +284,12 @@ public class FactoryGtris {
 	}
 	public void setScore(Score score) {
 		this.score = score;
+	}
+	public Score getHighScore() {
+		return highScore;
+	}
+	public void setHighScore(Score highScore) {
+		this.highScore = highScore;
 	}
 	public Figure[][] getMatrix(){
 		return this.matrix;

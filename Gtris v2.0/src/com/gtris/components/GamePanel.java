@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import com.gtris.enums.ColorFigure;
 import com.gtris.enums.ControlAlignment;
+import com.gtris.enums.ModePersistent;
 import com.gtris.exceptions.GameOverException;
 import com.gtris.factory.FactoryGtris;
 import com.gtris.models.Figure;
@@ -26,6 +27,7 @@ import com.gtris.models.Score;
 import com.gtris.sound.SoundManager;
 import com.gtris.threads.GameCoreImpl;
 import com.gtris.threads.GeneratorTimer;
+import com.gtris.utilities.Persistence;
 import com.gtris.utilities.Utilities;
 /**
  * Class represent the board game 
@@ -37,6 +39,7 @@ public final class GamePanel extends JPanel{
 	private static final long serialVersionUID = -8207110468263963436L;
 
 	private HashMap<String,String> levels;
+	
 	
 	private CopyOnWriteArrayList<Figure> onAir;
 	
@@ -76,6 +79,8 @@ public final class GamePanel extends JPanel{
 	
 	public com.gtris.models.Cursor cursor;//Can't create a getter and setter
 	
+	private Persistence persistence;
+	
 	
 	public GamePanel(){
 		levels = Utilities.readConfig("background");
@@ -88,6 +93,8 @@ public final class GamePanel extends JPanel{
         textStatus = "start";
         firstLoad = true;
         time = "00:00";
+        persistence = new Persistence("score");
+        factory.setHighScore(persistence.<Score>load());
 	}
 	/**
 	 * This method init the thread game
@@ -162,11 +169,11 @@ public final class GamePanel extends JPanel{
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("Paused!!!", factory.getWidth() / 2, factory.getHeight() /2 );
 		}
-		g2d.drawString("Score : " + factory.getScore().getCurrentScore(), factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE / 2);
-		g2d.drawString("Press Enter to  "+ textStatus, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE);	
-		g2d.drawString("Time played : " + time, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 2);
-		g2d.drawString("Level : " + currentLevel, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 3);
-			
+		g2d.drawString("High Score : " + factory.getScore().getCurrentScore(), factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE / 2);
+		g2d.drawString("Score : " + factory.getScore().getCurrentScore(), factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE);
+		g2d.drawString("Press Enter to  "+ textStatus, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE * 2);	
+		g2d.drawString("Time  : " + time, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 3);
+		g2d.drawString("Level : " + currentLevel, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 4);
 	}
 	private String getGameTime(){
 		if(startDate == null)
@@ -270,7 +277,7 @@ public final class GamePanel extends JPanel{
 	 */
 	private void gameOver(){
 		gameThread.interrupt();
-		SoundManager.getInstance().stopSound(getLevelStage() , true);
+		SoundManager.getInstance().stopSound(getLevelStage() , false);
 		factory.init();
 		onAir.clear();
 		currentLevel = 1;
@@ -281,6 +288,10 @@ public final class GamePanel extends JPanel{
 		started = false;
 		textStatus = "start";
 		firstLoad = true;
+		
+		if(factory.getHighScore() == null || factory.getScore().getCurrentScore() > factory.getHighScore().getCurrentScore()){
+			persistence.<Score>save(this.factory.getScore());
+		}
 	}
 	/**
 	 * Check the value in minutes and grow level if is necessary
@@ -295,7 +306,7 @@ public final class GamePanel extends JPanel{
 			factory.getScore().minutePlayed();
 			if(finalStage == currentLevel)
 				return;
-			SoundManager.getInstance().stopSound(getLevelStage() , true);
+			SoundManager.getInstance().stopSound(getLevelStage() , false);
 			currentLevel++;
 			SoundManager.getInstance().playSound(getLevelStage(),true);
 			background = new ImageIcon(getClass().getClassLoader().getResource(levels.get(getLevelStage()))).getImage();

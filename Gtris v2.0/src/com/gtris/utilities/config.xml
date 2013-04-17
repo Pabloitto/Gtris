@@ -7,11 +7,13 @@
 		com/gtris/resource/stage2.gif
 	</background>
 	<background id="stage3">
-		com/gtris/resource/stage3.jpg
+		com/gtris/resource/stage3.png
 	</background>
 	<background id="stage4">
-		com/gtris/resource/stage-final.jpg
+		com/gtris/resource/stage4.jpg
 	</background>
+	
+	
 	
 	<figure id="blue">
 		com/gtris/resource/blue.png
@@ -33,25 +35,19 @@
 	</figure>
 	
 	<sound id="stage1">
-		com/gtris/resource/islandYoshi.mid
+		com/gtris/resource/s1.mid
 	</sound>
 	<sound id="stage2">
-		com/gtris/resource/jefe.mid
+		com/gtris/resource/s2.mid
 	</sound>
 	<sound id="stage3">
-		com/gtris/resource/jefe2.mid
+		com/gtris/resource/s3.mid
 	</sound>
 	<sound id="stage4">
-		com/gtris/resource/jefe.mid
+		com/gtris/resource/s4.mid
 	</sound>
 	<sound id="pause">
 		com/gtris/resource/pause.mid
-	</sound>
-	<sound id="block">
-		com/gtris/resource/explode.wav
-	</sound>
-	<sound id="yoshi">
-		com/gtris/resource/block.wav
 	</sound>
 	<sound id="explode">
 		com/gtris/resource/yoshi.wav
