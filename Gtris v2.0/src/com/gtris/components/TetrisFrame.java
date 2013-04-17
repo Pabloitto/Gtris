@@ -54,6 +54,7 @@ public final class TetrisFrame extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setTitle("My Gtris!!!");
+        this.setLocationRelativeTo(null);
     }
 	
 }

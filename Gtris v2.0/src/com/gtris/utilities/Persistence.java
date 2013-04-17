@@ -1,21 +1,19 @@
 package com.gtris.utilities;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import com.gtris.enums.ModePersistent;
 
 public class Persistence {
 
 	private FileOutputStream fileOut;
 	private ObjectOutputStream objOut;
 	
-	
-	private FileInputStream fileIn;
+	private File file;
 	
 	private ObjectInputStream objIn;
 	
@@ -24,13 +22,18 @@ public class Persistence {
 	
 	public Persistence(String name){
 		this.name = name;
-		init(ModePersistent.WRITE);
-		init(ModePersistent.READ);
 	}
 	
 	public <T> void  save(T o){
 		try {
-			objOut.writeObject (o);
+			if(fileOut == null && objOut == null){
+				file = new File(this.name+".data");
+				if(!file.exists()){
+					fileOut = new FileOutputStream(file);
+					objOut = new ObjectOutputStream (fileOut);
+				}
+			}
+			objOut.writeObject(o);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -39,7 +42,16 @@ public class Persistence {
 	public <T> T load(){
 		T readObject = null;
 		try {
-			readObject= ((T) objIn.readObject());
+			if(objIn == null){
+				//InputStream stream = getStoreFile();
+				file = new File(this.name+".data");
+				if(file != null && file.exists()){
+					objIn = new ObjectInputStream(new FileInputStream(file));
+				}
+			}
+			if(objIn != null){
+				readObject= ((T) objIn.readObject());
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -47,24 +59,11 @@ public class Persistence {
 		}
 		return readObject;
 	}
-	private void init(ModePersistent mode){
-		try {
-			if(mode == ModePersistent.WRITE){
-				
-					fileOut = new FileOutputStream(this.name + ".data");
-					objOut = new ObjectOutputStream (fileOut);
-				
-			}
-			if(mode == ModePersistent.READ){
-				fileIn = new FileInputStream(this.name+".data");
-				objIn = new ObjectInputStream (fileIn);
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public InputStream getStoreFile(){
+		InputStream stream =  getClass()
+							 .getClassLoader()
+							 .getResourceAsStream("com/gtris/utilities/"+this.name+".data");
+		
+		return stream;
 	}
-	
-	
 }

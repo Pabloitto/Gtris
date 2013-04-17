@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 
 import com.gtris.enums.ColorFigure;
 import com.gtris.enums.ControlAlignment;
-import com.gtris.enums.ModePersistent;
 import com.gtris.exceptions.GameOverException;
 import com.gtris.factory.FactoryGtris;
 import com.gtris.models.Figure;
@@ -169,7 +168,7 @@ public final class GamePanel extends JPanel{
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("Paused!!!", factory.getWidth() / 2, factory.getHeight() /2 );
 		}
-		g2d.drawString("High Score : " + factory.getScore().getCurrentScore(), factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE / 2);
+		g2d.drawString("High Score : " + (factory.getHighScore() == null ? 0 :  factory.getHighScore().getCurrentScore()), factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE / 2);
 		g2d.drawString("Score : " + factory.getScore().getCurrentScore(), factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE);
 		g2d.drawString("Press Enter to  "+ textStatus, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE * 2);	
 		g2d.drawString("Time  : " + time, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 3);
@@ -291,6 +290,7 @@ public final class GamePanel extends JPanel{
 		
 		if(factory.getHighScore() == null || factory.getScore().getCurrentScore() > factory.getHighScore().getCurrentScore()){
 			persistence.<Score>save(this.factory.getScore());
+			factory.setHighScore(this.factory.getScore());
 		}
 	}
 	/**
