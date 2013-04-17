@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+/**
+ * Class for persist the high score game
+ * @author pablo
+ *
+ */
 public class Persistence {
 
 	private FileOutputStream fileOut;
@@ -23,7 +26,10 @@ public class Persistence {
 	public Persistence(String name){
 		this.name = name;
 	}
-	
+	/**
+	 * Generic method for save the object
+	 * @param o
+	 */
 	public <T> void  save(T o){
 		try {
 			if(fileOut == null && objOut == null){
@@ -38,6 +44,10 @@ public class Persistence {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Generic method for get the generic object from the file
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> T load(){
 		T readObject = null;
@@ -58,12 +68,5 @@ public class Persistence {
 			e.printStackTrace();
 		}
 		return readObject;
-	}
-	public InputStream getStoreFile(){
-		InputStream stream =  getClass()
-							 .getClassLoader()
-							 .getResourceAsStream("com/gtris/utilities/"+this.name+".data");
-		
-		return stream;
 	}
 }
