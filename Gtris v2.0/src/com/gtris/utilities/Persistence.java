@@ -28,7 +28,7 @@ public class Persistence {
 		try {
 			if(fileOut == null && objOut == null){
 				file = new File(this.name+".data");
-				if(!file.exists()){
+				if(file.exists()){
 					fileOut = new FileOutputStream(file);
 					objOut = new ObjectOutputStream (fileOut);
 				}
