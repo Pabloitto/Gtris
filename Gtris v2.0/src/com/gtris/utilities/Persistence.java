@@ -23,7 +23,10 @@ public class Persistence {
 	
 	
 	private String name;
-	
+	/**
+	 * Constructor pass the name of file where the score is stored 
+	 * @param name
+	 */
 	public Persistence(String name){
 		this.name = name;
 	}
@@ -69,6 +72,10 @@ public class Persistence {
 		}
 		return readObject;
 	}
+	/**
+	 * This method returns a folder where the jar file exist
+	 * @return
+	 */
 	public String getPath(){
 		String url = null;
 		try {

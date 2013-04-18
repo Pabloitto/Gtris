@@ -1,5 +1,6 @@
 package com.gtris.threads;
 
+import java.awt.Image;
 import java.util.TimerTask;
 
 import com.gtris.components.GamePanel;
@@ -38,27 +39,30 @@ public class GeneratorTimer extends TimerTask{
 			 Figure second = getNewFigure(p);
 			 this.gamePanel.getOnAir().add(second);
 			 
-			 //Fix the problem with the concurrency
+			 //TODO:Fix this
 			 if(first.getY() != second.getY()){
 				 second.setY(first.getY());
-				 //System.out.println("Changing value!!!");
 			 }
 			 
 		}
-	}	 
+	}	
+	/**
+	 * Getter of seconds
+	 * @return int represent the seconds played
+	 */
 	public int getSeconds(){
 		return seconds;
 	}
+	/**
+	 * Get new image for put in a list of block falling
+	 * @param rdmPosition position in x - screen
+	 * @return new figure falling
+	 */
 	public Figure getNewFigure(int rdmPosition){
 		Figure f = this.gamePanel.getFactory().getMatrix()[rdmPosition][0];
-		Figure result = new Figure();
-		result.setId(f.getId());
-		result.setX(f.getX());
-		result.setY(f.getY());
-		result.setHeight(f.getHeight());
-		result.setWidth(f.getWidth());
-		result.setColor(ColorFigure.getRandom());
-		result.setImage(this.gamePanel.getFactory().getSpecificImage(result.getColor().toString()));
+		ColorFigure colorF = ColorFigure.getRandom();
+		Image im = this.gamePanel.getFactory().getSpecificImage(colorF.toString());
+		Figure result = new Figure(f.getId() , im ,f.getHeight() ,f.getWidth() , f.getX() , f.getY() , false , colorF, null);
 		return result;
 	}
 }

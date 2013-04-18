@@ -14,7 +14,7 @@ import com.gtris.models.Score;
 import com.gtris.sound.SoundManager;
 import com.gtris.utilities.Utilities;
 /**
- * Blocks Factory
+ * Blocks Factory is the class where the logic game are
  * @author Pablo
  *
  */
@@ -84,23 +84,7 @@ public class FactoryGtris {
 			y = (SIZE_FIGURE * -1);
 			for(int j=0;j<matrix[i].length;j++){
 				y = y + SIZE_FIGURE;
-				f = new Figure();
-				f.setId(++id);
-				f.setWidth(SIZE_FIGURE);
-				f.setHeight(SIZE_FIGURE);
-				f.setX(x);
-				f.setY(y);
-				
-				
-				//This is for testing
-				/*ColorFigure c = ColorFigure.getRandom();
-				f.setImage(getSpecificImage(c.toString()));
-				f.setColor(c);
-				f.setGround(true);*/
-				
-				f.setImage(null);
-				f.setColor(null);
-				
+				f = new Figure(++id, SIZE_FIGURE, SIZE_FIGURE, x , y);
 				matrix[i][j] = f;
 			}
 		}
@@ -115,6 +99,9 @@ public class FactoryGtris {
 		}
 		return myFactory;
 	}
+	/**
+	 * This method execute the algorithm
+	 */
 	public void searchFigureValid(){
 		for(int i=0;i<matrix.length;i++){
 			for(int j=0;j<matrix[i].length;j++){
@@ -123,7 +110,9 @@ public class FactoryGtris {
 		}
 	}
 	/**
-	 * This method search the valid block for destroy part of a node in matrix
+	 * This method search the valid block for destroy a tetris block
+	 * start in a node and check is the neighborhoods has the same color
+	 * until the sum is 4 
 	 * @param x 
 	 * @param y
 	 */
@@ -131,10 +120,10 @@ public class FactoryGtris {
 		
 		Figure nodeIni = this.matrix[x][y];
 			
-		if(nodeIni.getImage() == null)
+		if(nodeIni.getImage() == null)//The position in a matrix is empty
 			return;
 		
-		final int NUMBERS_FIGURE = 4;
+		final int NUMBERS_FIGURE = 4;//This is the sum for a complete figure
 		
 		ArrayList<Figure> toDelete = new ArrayList<>();
 		
@@ -145,6 +134,9 @@ public class FactoryGtris {
 		toDelete.add(nodeIni);
 		
 		while(!toCheck.isEmpty()){
+			/**
+			 * When the block to delete is 4 then we need to destroy the figure
+			 */
 			if(toDelete.size() == NUMBERS_FIGURE){
 				for(Figure del : toDelete){
 					del.setColor(null);
@@ -158,15 +150,20 @@ public class FactoryGtris {
 			
 			Figure currentNode = toCheck.remove(0);
 			
+			//Each iteration we need to change the coordinates
 			x = getRealNodePosition(currentNode.getX());
 			y = getRealNodePosition(currentNode.getY());
 			
-			List<ControlAlignment> directions = new LinkedList<ControlAlignment>(Arrays.asList(ControlAlignment.values()));
+			List<ControlAlignment> directions = new LinkedList<ControlAlignment>(Arrays.asList(ControlAlignment.values()));//This is a list of directions
 			
 			while(!directions.isEmpty()){
 				
-				ControlAlignment d = directions.remove(0);
+				ControlAlignment d = directions.remove(0);//Get current direction
 				
+				/**
+				 * Check if is the same color of a nodeIni then we need to check if 
+				 * not came the same direction currentNode.getOrigin() != ControlAlignment.RIGHT
+				 */
 				switch(d){
 					case RIGHT:{
 						if( x < (COLS - 1) && equalColor(this.matrix[x  + 1][y].getColor(), currentNode.getColor())){//Go to RIGHT
@@ -216,6 +213,7 @@ public class FactoryGtris {
 				}	
 			}
 		}
+		//Clear origin directions
 		cleanOriginNode();
 	}
 	private void cleanOriginNode(){

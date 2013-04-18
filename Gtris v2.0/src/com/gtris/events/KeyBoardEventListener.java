@@ -17,7 +17,10 @@ public class KeyBoardEventListener extends KeyAdapter{
 	public KeyBoardEventListener(GamePanel gamePanel){
 		this.gamePanel=gamePanel;
 	}
-	
+	/**
+	 * This override method execute when the client press arrows for move the cursor, press the space bar
+	 * for change a color block or press enter for pause the game
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -25,6 +28,11 @@ public class KeyBoardEventListener extends KeyAdapter{
 			this.gamePanel.start();
 		}
 		if(!this.gamePanel.isPaused()){
+			/**
+			 * When we move the cursor check if is active,
+			 * if is active then we need to move the blocks depend the
+			 * direction on the method moveSquare, also we need check if the block can be moved =)
+			 */
 			if(key == KeyEvent.VK_LEFT){
 				if(gamePanel.cursor.getX() > 0){
 					if(gamePanel.cursor.isActive()){
@@ -58,7 +66,7 @@ public class KeyBoardEventListener extends KeyAdapter{
 					gamePanel.cursor.move(ControlAlignment.TOP);
 				}
 			}else if(key == KeyEvent.VK_SPACE){
-				if(gamePanel.canActiveCursor()){
+				if(gamePanel.canActiveCursor()){//Check if the cursor is hover the block valid to move
 					gamePanel.cursor.setActive(!gamePanel.cursor.isActive());
 				}
 			}

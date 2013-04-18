@@ -7,7 +7,11 @@ import javax.swing.JProgressBar;
 
 import com.gtris.events.KeyBoardEventListener;
 import com.gtris.sound.SoundManager;
-
+/**
+ * This is the window game
+ * @author pablo
+ *
+ */
 public final class TetrisFrame extends JFrame{
 
 	/**
@@ -32,7 +36,7 @@ public final class TetrisFrame extends JFrame{
 		initComponents();
 	}
 	/**
-	 * Init the components in window
+	 * Initialize the components in window
 	 */
 	private void initComponents(){
 		this.gamePanel = new GamePanel();
@@ -40,6 +44,9 @@ public final class TetrisFrame extends JFrame{
 		this.gamePanel.setVisible(false);
 		this.builtFrame();
 	}
+	/**
+	 * When the songs are loaded, so, the game panel is show
+	 */
 	public void loadGame(){
 		this.progressBar.setVisible(false);
 		this.addKeyListener(new KeyBoardEventListener(this.gamePanel));

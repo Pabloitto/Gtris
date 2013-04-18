@@ -26,6 +26,29 @@ public class Figure implements Comparable<Figure>{
 		
 	}
 
+	public Figure(Integer id, Image image, int height, int width, int x, int y,
+			boolean ground, ColorFigure color, ControlAlignment origin) {
+		super();
+		this.id = id;
+		this.image = image;
+		this.height = height;
+		this.width = width;
+		this.x = x;
+		this.y = y;
+		this.ground = ground;
+		this.color = color;
+		this.origin = origin;
+	}
+
+	public Figure(Integer id, int height, int width, int x, int y) {
+		super();
+		this.id = id;
+		this.height = height;
+		this.width = width;
+		this.x = x;
+		this.y = y;
+	}
+
 	public Integer getId() {
 		return id;
 	}

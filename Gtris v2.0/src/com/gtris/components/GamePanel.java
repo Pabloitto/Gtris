@@ -96,7 +96,7 @@ public final class GamePanel extends JPanel{
         factory.setHighScore(persistence.<Score>load());
 	}
 	/**
-	 * This method init the thread game
+	 * This method initialize the thread game 
 	 */
 	public void start(){
 			if(!isStarted()){
@@ -383,7 +383,7 @@ public final class GamePanel extends JPanel{
 		}
 	}
 	/**
-	 * This method repain all matrix colors
+	 * This method repaint all matrix colors
 	 * @param g2d
 	 * @throws GameOverException if no more blocks for add
 	 */

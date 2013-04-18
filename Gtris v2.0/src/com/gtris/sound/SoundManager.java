@@ -31,6 +31,11 @@ public class SoundManager {
 		songs = Utilities.readConfig("sound");
 		songsPlayed = new HashMap<>();
 	}
+	/**
+	 * We load the song async with a thread
+	 * @param progressBar the component progress bar
+	 * @param tetrisFrame the jframe where the method for update the panel are
+	 */
 	public void loadSongs(final JProgressBar progressBar, final TetrisFrame tetrisFrame){
 		Thread loaderSongs = new Thread(new Runnable() {
 			@Override
@@ -44,7 +49,7 @@ public class SoundManager {
 							Map.Entry<String,String> pairs = it.next();
 							progress+=percent;
 							progressBar.setValue((int)progress);
-							progressBar.setString("Load sound file " + pairs.getValue() + " please wait...");
+							progressBar.setString("Loading file " + pairs.getValue() + " please wait...");
 							songsPlayed.put(pairs.getKey(),init(pairs.getValue()));
 						}
 					}
@@ -56,14 +61,25 @@ public class SoundManager {
 		});
 		loaderSongs.start();
 	}
+	/**
+	 * Initialize a new clip with a name of song
+	 * @param path name of song
+	 * @return
+	 * @throws Exception
+	 */
 	private Clip init(String path) throws Exception{
 		 Clip clip;
 		 url = getClass().getClassLoader().getResource(path);
 		 AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
 		 clip = AudioSystem.getClip();
 		 clip.open(audioIn);
-		return clip;
+		 return clip;
 	}
+	/**
+	 * Play the song search in a hash map
+	 * @param song name of song
+	 * @param repeat
+	 */
 	public void playSound(final String song , boolean repeat){
 		Clip currentSong  = songsPlayed.get(song);
 		currentSong.setMicrosecondPosition(0);
@@ -74,6 +90,11 @@ public class SoundManager {
 			songsPlayed.get(song).loop(0);
 		}
 	}
+	/**
+	 * Stops the song search in a hash map
+	 * @param song name of song
+	 * @param close if the connection need closed
+	 */
 	public void stopSound(String song , boolean close){
 		Clip currentSong  = songsPlayed.get(song);
 		currentSong.stop();
