@@ -174,6 +174,10 @@ public final class GamePanel extends JPanel{
 		g2d.drawString("Time  : " + time, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 3);
 		g2d.drawString("Level : " + currentLevel, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 4);
 	}
+	/**
+	 * Get the time game
+	 * @return
+	 */
 	private String getGameTime(){
 		if(startDate == null)
 			return "";
