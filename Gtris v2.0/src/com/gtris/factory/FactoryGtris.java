@@ -102,10 +102,12 @@ public class FactoryGtris {
 	/**
 	 * This method execute the algorithm
 	 */
-	public void searchFigureValid(){
+	public void runAnalizer(){
 		for(int i=0;i<matrix.length;i++){
 			for(int j=0;j<matrix[i].length;j++){
-				tetrisAnalizer(i , j);
+				if(matrix[i][j].getImage() != null){
+					tetrisAnalizer(i , j);
+				}
 			}
 		}
 	}
@@ -118,22 +120,27 @@ public class FactoryGtris {
 	 */
 	private void tetrisAnalizer(int x , int y){
 		
-		Figure nodeIni = this.matrix[x][y];
-			
-		if(nodeIni.getImage() == null)//The position in a matrix is empty
-			return;
-		
 		final int NUMBERS_FIGURE = 4;//This is the sum for a complete figure
+		
+		Figure nodeIni = this.matrix[x][y];
+		
+		Figure currentNode = null;
 		
 		ArrayList<Figure> toDelete = new ArrayList<>();
 		
 		ArrayList<Figure> toCheck = new ArrayList<>();
 		
+		List<ControlAlignment> directions = null;
+		
 		toCheck.add(nodeIni);
 		
 		toDelete.add(nodeIni);
 		
+		
 		while(!toCheck.isEmpty()){
+			
+			currentNode = toCheck.remove(0);
+			
 			/**
 			 * When the block to delete is 4 then we need to destroy the figure
 			 */
@@ -148,13 +155,11 @@ public class FactoryGtris {
 				break;
 			}
 			
-			Figure currentNode = toCheck.remove(0);
-			
 			//Each iteration we need to change the coordinates
 			x = getRealNodePosition(currentNode.getX());
 			y = getRealNodePosition(currentNode.getY());
 			
-			List<ControlAlignment> directions = new LinkedList<ControlAlignment>(Arrays.asList(ControlAlignment.values()));//This is a list of directions
+			directions = new LinkedList<ControlAlignment>(Arrays.asList(ControlAlignment.values()));//This is a list of directions
 			
 			while(!directions.isEmpty()){
 				
@@ -214,14 +219,19 @@ public class FactoryGtris {
 			}
 		}
 		//Clear origin directions
-		cleanOriginNode();
+		cleanOriginNode(toDelete);
 	}
-	private void cleanOriginNode(){
-		for(int i=0; i<matrix.length ; i++){
-			for(int j=0;j<matrix[i].length;j++){
-				matrix[i][j].setOrigin(null);
-			}
+	/**
+	 * This method remove the origin of nodes deleted and not deleted
+	 * @param toDelete
+	 */
+	private void cleanOriginNode(ArrayList<Figure> trash){
+		for(Figure deleted : trash){
+			matrix[getRealNodePosition(deleted.getX())]
+				  [getRealNodePosition(deleted.getY())]
+				  .setOrigin(null);//Update the origin
 		}
+		trash.clear();//Clean trash
 	}
 	/**
 	 * This method load the initial blocks in screen
@@ -237,8 +247,7 @@ public class FactoryGtris {
 				f.setGround(true);
 			}
 		}
-		
-		
+		this.runAnalizer();
 	}
 	/**
 	 * This method compare two colors of blocks

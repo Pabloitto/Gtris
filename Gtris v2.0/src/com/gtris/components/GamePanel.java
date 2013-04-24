@@ -5,14 +5,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -40,7 +38,7 @@ public final class GamePanel extends JPanel{
 	private HashMap<String,String> levels;
 	
 	
-	private CopyOnWriteArrayList<Figure> onAir;
+	private ArrayList<Figure> onAir;
 	
 	private FactoryGtris factory;
 	
@@ -80,6 +78,7 @@ public final class GamePanel extends JPanel{
 	
 	private Persistence persistence;
 	
+	private final Object lock;
 	
 	public GamePanel(){
 		levels = Utilities.readConfig("background");
@@ -88,12 +87,13 @@ public final class GamePanel extends JPanel{
 		background = new ImageIcon(getClass().getClassLoader().getResource(levels.get(getLevelStage()))).getImage();
 		factory = FactoryGtris.getInstance();
 		cursor = new com.gtris.models.Cursor();
-        onAir = new CopyOnWriteArrayList<>();
+        onAir = new ArrayList<>();
         textStatus = "start";
         firstLoad = true;
         time = "00:00";
         persistence = new Persistence("score");
         factory.setHighScore(persistence.<Score>load());
+        lock = new Object();
 	}
 	/**
 	 * This method initialize the thread game 
@@ -134,11 +134,13 @@ public final class GamePanel extends JPanel{
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
+		
 		super.paintComponent(g);
+		
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,  
-                RenderingHints.VALUE_ANTIALIAS_ON); 
+		
 		g2d.drawImage(background, 0, 0, factory.getWidth() + FactoryGtris.SIZE_FIGURE, factory.getHeight() + FactoryGtris.SIZE_FIGURE, this);
+		
 		if(isStarted() && !isPaused()){
 			drawMatrix(g2d);
 			drawFigure(g2d);
@@ -197,6 +199,7 @@ public final class GamePanel extends JPanel{
 	public void drawFigure(Graphics2D g2d){
 		try{
 			if(!onAir.isEmpty()){
+				this.unblock();//When the figures are generated we can to move
 				for(Figure f : onAir){
 					g2d.drawImage(f.getImage(),f.getX(), f.getY(), f.getWidth(), f.getHeight(),this);
 					drawMoved(f);
@@ -227,6 +230,7 @@ public final class GamePanel extends JPanel{
 			y = factory.getRealNodePosition(f.getY());
 			onDown(f, factory.getMatrix()[x][y]);
 		}
+		factory.runAnalizer();
 	}
 	/**
 	 * Move block selected from the cursor
@@ -263,8 +267,7 @@ public final class GamePanel extends JPanel{
 				cursorPosition.setImage(newImage);
 				cursorPosition.setColor(colorNew);
 		}
-		factory.searchFigureValid();
-		
+		factory.runAnalizer();
 	}
 	/**
 	 * Verify if  we can active the cursor for move blocks
@@ -327,7 +330,6 @@ public final class GamePanel extends JPanel{
 		real.setImage(aux.getImage());
 		real.setColor(aux.getColor());
 		real.setGround(true);
-		factory.searchFigureValid();
 	}
 	/**
 	 * CHeck if the block fall in ground or another block
@@ -419,10 +421,10 @@ public final class GamePanel extends JPanel{
 	public FactoryGtris getFactory(){
 		return this.factory;
 	}
-	public CopyOnWriteArrayList<Figure> getOnAir() {
+	public ArrayList<Figure> getOnAir() {
 		return onAir;
 	}
-	public void setOnAir(CopyOnWriteArrayList<Figure> onAir) {
+	public void setOnAir(ArrayList<Figure> onAir) {
 		this.onAir = onAir;
 	}
 	public boolean isStarted(){
@@ -430,6 +432,20 @@ public final class GamePanel extends JPanel{
 	}
 	public boolean isPaused(){
 		return paused;
+	}
+	public void unblock() {
+        synchronized (lock) {
+            lock.notify();
+        }
+    }
+	public void block(){
+		synchronized (lock) {
+			try {
+				lock.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	    }
 	}
 	
 }

@@ -38,12 +38,7 @@ public class GeneratorTimer extends TimerTask{
 			 }
 			 Figure second = getNewFigure(p);
 			 this.gamePanel.getOnAir().add(second);
-			 
-			 //TODO:Fix this
-			 if(first.getY() != second.getY()){
-				 second.setY(first.getY());
-			 }
-			 
+			 this.gamePanel.block();//Need to sync the process
 		}
 	}	
 	/**
