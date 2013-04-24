@@ -122,7 +122,7 @@ public class FactoryGtris {
 		
 		final int NUMBERS_FIGURE = 4;//This is the sum for a complete figure
 		
-		Figure nodeIni = this.matrix[x][y];
+		Figure first = this.matrix[x][y];
 		
 		Figure currentNode = null;
 		
@@ -132,9 +132,9 @@ public class FactoryGtris {
 		
 		List<ControlAlignment> directions = null;
 		
-		toCheck.add(nodeIni);
+		toCheck.add(first);//Add on list to check
 		
-		toDelete.add(nodeIni);
+		toDelete.add(first);// Add on list to delete too
 		
 		
 		while(!toCheck.isEmpty()){
