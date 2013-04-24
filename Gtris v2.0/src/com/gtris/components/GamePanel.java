@@ -220,7 +220,7 @@ public final class GamePanel extends JPanel{
 		int x , y;
 		if(f.getY() < ((FactoryGtris.ROWS - 1) * FactoryGtris.SIZE_FIGURE)){
 			if(!cratch(f)){
-				f.move();
+				f.move(ControlAlignment.BOTTOM);
 			}else{
 				x = factory.getRealNodePosition(f.getX());
 				y = factory.getRealNodePosition(f.getY());

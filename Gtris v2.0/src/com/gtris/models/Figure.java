@@ -4,13 +4,14 @@ import java.awt.Image;
 import com.gtris.enums.ColorFigure;
 import com.gtris.enums.ControlAlignment;
 import com.gtris.factory.FactoryGtris;
+import com.gtris.models.ifaces.ICanMove;
 
 /**
  * Class represent a block in the screen
  * @author Pablo
  *
  */
-public class Figure implements Comparable<Figure>{
+public class Figure implements ICanMove , Comparable<Figure>{
 
 	private Integer id;
 	private Image image;
@@ -130,16 +131,15 @@ public class Figure implements Comparable<Figure>{
 	/**
 	 * Move image down (falling the block)
 	 */
-	public void move(){
+	@Override
+	public void move(ControlAlignment direction){
 		this.y += FactoryGtris.SIZE_FIGURE;
 	}
-
-
+	
 	@Override
 	public int compareTo(Figure arg0) {
 		return this.getId().compareTo(arg0.getId());
 	}
-
 	
 	
 }
