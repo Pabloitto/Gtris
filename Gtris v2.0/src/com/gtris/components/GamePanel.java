@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -38,7 +39,7 @@ public final class GamePanel extends JPanel{
 	private HashMap<String,String> levels;
 	
 	
-	private ArrayList<Figure> onAir;
+	private CopyOnWriteArrayList<Figure> onAir;
 	
 	private FactoryGtris factory;
 	
@@ -87,7 +88,7 @@ public final class GamePanel extends JPanel{
 		background = new ImageIcon(getClass().getClassLoader().getResource(levels.get(getLevelStage()))).getImage();
 		factory = FactoryGtris.getInstance();
 		cursor = new com.gtris.models.Cursor();
-        onAir = new ArrayList<>();
+        onAir = new CopyOnWriteArrayList<>();
         textStatus = "start";
         firstLoad = true;
         time = "00:00";
@@ -423,10 +424,10 @@ public final class GamePanel extends JPanel{
 	public FactoryGtris getFactory(){
 		return this.factory;
 	}
-	public ArrayList<Figure> getOnAir() {
+	public CopyOnWriteArrayList<Figure> getOnAir() {
 		return onAir;
 	}
-	public void setOnAir(ArrayList<Figure> onAir) {
+	public void setOnAir(CopyOnWriteArrayList<Figure> onAir) {
 		this.onAir = onAir;
 	}
 	public boolean isStarted(){
