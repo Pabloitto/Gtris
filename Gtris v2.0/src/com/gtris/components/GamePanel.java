@@ -300,6 +300,7 @@ public final class GamePanel extends JPanel{
 			persistence.<Score>save(this.factory.getScore());
 			factory.setHighScore(this.factory.getScore());
 		}
+		SoundManager.getInstance().playSound("gameOver", false);
 	}
 	/**
 	 * Check the value in minutes and grow level if is necessary

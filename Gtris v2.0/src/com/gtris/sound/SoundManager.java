@@ -49,7 +49,7 @@ public class SoundManager {
 							Map.Entry<String,String> pairs = it.next();
 							progress+=percent;
 							progressBar.setValue((int)progress);
-							progressBar.setString("Loading file " + pairs.getValue() + " please wait...");
+							//progressBar.setString("Loading file " + pairs.getValue() + " please wait...");
 							songsPlayed.put(pairs.getKey(),init(pairs.getValue()));
 						}
 					}
