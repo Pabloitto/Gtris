@@ -213,17 +213,18 @@ public final class GamePanel extends JPanel{
 	 * @throws GameOverException
 	 */
 	public void drawMoved(Figure f) throws GameOverException{
+		int x , y;
 		if(f.getY() < ((FactoryGtris.ROWS - 1) * FactoryGtris.SIZE_FIGURE)){
-			if(!scratch(f)){
+			if(!cratch(f)){
 				f.move();
 			}else{
-				int x = factory.getRealNodePosition(f.getX());
-				int y = factory.getRealNodePosition(f.getY());
+				x = factory.getRealNodePosition(f.getX());
+				y = factory.getRealNodePosition(f.getY());
 				onDown(f, factory.getMatrix()[x][y]);
 			}
 		}else{
-			int x = factory.getRealNodePosition(f.getX());
-			int y = factory.getRealNodePosition(f.getY());
+			x = factory.getRealNodePosition(f.getX());
+			y = factory.getRealNodePosition(f.getY());
 			onDown(f, factory.getMatrix()[x][y]);
 		}
 	}
@@ -332,9 +333,9 @@ public final class GamePanel extends JPanel{
 	 * CHeck if the block fall in ground or another block
 	 * @param f1 the instance of a block
 	 * @return true if the block scratch
-	 * @throws GameOverException if scratch with the top
+	 * @throws GameOverException if cratch with the top
 	 */
-	private boolean scratch(Figure f1) throws GameOverException{
+	private boolean cratch(Figure f1) throws GameOverException{
 		Figure [][] matrix = factory.getMatrix();
 		for(int i=0;i<matrix.length;i++){
 			for(int j=0;j<matrix[i].length;j++){
