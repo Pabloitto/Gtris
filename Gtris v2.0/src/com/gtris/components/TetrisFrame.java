@@ -58,7 +58,7 @@ public final class TetrisFrame extends JFrame{
 	 * Set elements to frame
 	 */
 	private void builtFrame(){
-        this.setSize(1000, 1000);
+        this.setSize(1000, 800);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
