@@ -197,6 +197,7 @@ public final class GamePanel extends JPanel{
 		g2d.drawString("Press Enter to  "+ textStatus, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE * 2);	
 		g2d.drawString("Time  : " + time, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 3);
 		g2d.drawString("Level : " + currentLevel, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 4);
+		g2d.drawString("Press R for rote game", factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 5);
 	}
 	public void rotateGame(int x , int  y , AffineTransform trans , ControlAlignment direction){
 		if(direction != null){
