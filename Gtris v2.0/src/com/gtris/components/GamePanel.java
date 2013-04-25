@@ -20,6 +20,7 @@ import com.gtris.enums.ColorFigure;
 import com.gtris.enums.ControlAlignment;
 import com.gtris.exceptions.GameOverException;
 import com.gtris.factory.FactoryGtris;
+import com.gtris.models.BlockBase;
 import com.gtris.models.Figure;
 import com.gtris.models.Score;
 import com.gtris.sound.SoundManager;
@@ -197,13 +198,13 @@ public final class GamePanel extends JPanel{
 	 * Paint the block falling
 	 * @param g2d
 	 */
-	public void drawFigure(Graphics2D g2d){
+	public void  drawFigure(Graphics2D g2d){
 		try{
 			if(!onAir.isEmpty()){
 				this.unblock();//When the figures are generated we can to move
 				for(Figure f : onAir){
 					g2d.drawImage(f.getImage(),f.getX(), f.getY(), f.getWidth(), f.getHeight(),this);
-					drawMoved(f);
+					this.<Figure>drawMoved(f);
 				}
 				clear();
 			}
@@ -213,14 +214,16 @@ public final class GamePanel extends JPanel{
 	}
 	/**
 	 * Paint the block falling
+	 * @param f 
 	 * @param f
+	 * @return 
 	 * @throws GameOverException
 	 */
-	public void drawMoved(Figure f) throws GameOverException{
+	public <T extends BlockBase> void drawMoved(T f) throws GameOverException{
 		int x , y;
 		if(f.getY() < ((FactoryGtris.ROWS - 1) * FactoryGtris.SIZE_FIGURE)){
 			if(!cratch(f)){
-				f.move(ControlAlignment.BOTTOM);
+				f.move();
 			}else{
 				x = factory.getRealNodePosition(f.getX());
 				y = factory.getRealNodePosition(f.getY());
@@ -328,7 +331,7 @@ public final class GamePanel extends JPanel{
 	 * @param aux element in the air list
 	 * @param real instance in a matrix
 	 */
-	private void onDown(Figure aux , Figure real){
+	private <T extends BlockBase>void onDown(T aux , T real){
 		aux.setGround(true);
 		real.setImage(aux.getImage());
 		real.setColor(aux.getColor());
@@ -340,7 +343,7 @@ public final class GamePanel extends JPanel{
 	 * @return true if the block scratch
 	 * @throws GameOverException if cratch with the top
 	 */
-	private boolean cratch(Figure f1) throws GameOverException{
+	private <T extends BlockBase>boolean cratch(T f1) throws GameOverException{
 		Figure [][] matrix = factory.getMatrix();
 		for(int i=0;i<matrix.length;i++){
 			for(int j=0;j<matrix[i].length;j++){
