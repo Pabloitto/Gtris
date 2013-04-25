@@ -84,6 +84,8 @@ public class KeyBoardEventListener extends KeyAdapter{
 						gamePanel.getFactory().runAnalizer();
 					}
 				}
+			}else if(key == KeyEvent.VK_R){
+				gamePanel.getFactory().rotateMatrix();
 			}
 		}
 	}

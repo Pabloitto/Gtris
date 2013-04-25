@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -144,7 +145,17 @@ public final class GamePanel extends JPanel{
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.drawImage(background, 0, 0, factory.getWidth() + FactoryGtris.SIZE_FIGURE, factory.getHeight() + FactoryGtris.SIZE_FIGURE, this);
+		AffineTransform t = new AffineTransform();
+		
+		rotateGame(
+				factory.getWidth() + FactoryGtris.SIZE_FIGURE , 
+				factory.getHeight() + FactoryGtris.SIZE_FIGURE , 
+				 t, 
+				ControlAlignment.getDirection(factory.getState()));
+		
+		g2d.transform(t);
+		
+		g2d.drawImage(background, 0, 0, factory.getWidth() + FactoryGtris.SIZE_FIGURE, factory.getHeight() + FactoryGtris.SIZE_FIGURE, null);
 		
 		if(isStarted() && !isPaused()){
 			drawMatrix(g2d);
@@ -186,6 +197,21 @@ public final class GamePanel extends JPanel{
 		g2d.drawString("Press Enter to  "+ textStatus, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) , FactoryGtris.SIZE_FIGURE * 2);	
 		g2d.drawString("Time  : " + time, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 3);
 		g2d.drawString("Level : " + currentLevel, factory.getWidth() + (FactoryGtris.SIZE_FIGURE * 2) ,  FactoryGtris.SIZE_FIGURE * 4);
+	}
+	public void rotateGame(int x , int  y , AffineTransform trans , ControlAlignment direction){
+		if(direction != null){
+			switch(direction){
+				case RIGHT:
+					trans.rotate(Math.toRadians(-90) , x , y / 2);
+					break;
+				case LEFT:
+					trans.rotate(Math.toRadians(90) , x , y / 2);
+					break;
+				case BOTTOM:
+					trans.rotate(Math.toRadians(180), x / 2 ,y / 2);
+					break;
+			}
+		}
 	}
 	/**
 	 * Get the time game
@@ -369,7 +395,6 @@ public final class GamePanel extends JPanel{
 			generatorTimer.cancel();
 			generatorTimer = new GeneratorTimer(this);
 			delay-=250;
-			//System.out.println(delay);
 			timer.schedule(generatorTimer, 0 , delay);
 			factory.getScore().minutePlayed();
 			if(finalStage == currentLevel)

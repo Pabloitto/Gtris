@@ -28,14 +28,13 @@ public class FactoryGtris {
 	public static final int SIZE_FIGURE = 32;
 	public static final int ROWS = 24;
 	public static final int COLS = 12;
-	
-	
+	private int clicks;
 	
 	private FactoryGtris(){
 		figures = Utilities.readConfig("figure");
 		matrix = new Figure[COLS][ROWS];
 		this.score = new Score();
-		init();
+		init(matrix);
 	}
 	/**
 	 * Get image random
@@ -75,7 +74,7 @@ public class FactoryGtris {
 	 * when we change the position or the new block falling on ground 
 	 * only the attribute is changed
 	 */
-	public void init(){
+	public void init(Figure[][] matrix){
 		Figure f = null;
 		int id = 0;
 		int x = (SIZE_FIGURE * -1) , y = (SIZE_FIGURE * -1);
@@ -88,6 +87,9 @@ public class FactoryGtris {
 				matrix[i][j] = f;
 			}
 		}
+	}
+	public void init(){
+		this.init(this.matrix);
 	}
 	/**
 	 * This method return an instance of class FactoryGtris
@@ -249,6 +251,12 @@ public class FactoryGtris {
 		}
 		this.runAnalizer();
 	}
+	public void rotateMatrix(){
+		if(clicks == 4){
+			clicks = 0;
+		}
+		clicks++;
+	}
 	/**
 	 * This method compare two colors of blocks
 	 * @param colorA color in matrix
@@ -301,4 +309,8 @@ public class FactoryGtris {
 	public Figure[][] getMatrix(){
 		return this.matrix;
 	}
+	public int getState(){
+		return clicks;
+	}
+	
 }
