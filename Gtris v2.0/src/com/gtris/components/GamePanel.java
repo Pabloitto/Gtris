@@ -80,7 +80,6 @@ public final class GamePanel extends JPanel{
 	
 	private Persistence persistence;
 	
-	private final Object lock;
 	
 	public GamePanel(){
 		levels = Utilities.readConfig("background");
@@ -95,7 +94,6 @@ public final class GamePanel extends JPanel{
         time = "00:00";
         persistence = new Persistence("score");
         factory.setHighScore(persistence.<Score>load());
-        lock = new Object();
 	}
 	/**
 	 * This method initialize the thread game 
@@ -201,7 +199,6 @@ public final class GamePanel extends JPanel{
 	public void  drawFigure(Graphics2D g2d){
 		try{
 			if(!onAir.isEmpty()){
-				this.unblock();//When the figures are generated we can to move
 				for(Figure f : onAir){
 					g2d.drawImage(f.getImage(),f.getX(), f.getY(), f.getWidth(), f.getHeight(),this);
 					this.<Figure>drawMoved(f);
@@ -305,7 +302,6 @@ public final class GamePanel extends JPanel{
 			factory.setHighScore(this.factory.getScore());
 		}
 		SoundManager.getInstance().playSound("gameOver", false);
-		this.unblock();
 	}
 	/**
 	 * Check the value in minutes and grow level if is necessary
@@ -438,20 +434,6 @@ public final class GamePanel extends JPanel{
 	}
 	public boolean isPaused(){
 		return paused;
-	}
-	public void unblock() {
-        synchronized (lock) {
-            lock.notify();
-        }
-    }
-	public void block(){
-		synchronized (lock) {
-			try {
-				lock.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-	    }
 	}
 	
 }

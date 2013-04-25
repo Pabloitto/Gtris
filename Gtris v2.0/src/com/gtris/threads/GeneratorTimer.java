@@ -38,7 +38,6 @@ public class GeneratorTimer extends TimerTask{
 			 }
 			 Figure second = getNewFigure(p);
 			 this.gamePanel.getOnAir().add(second);
-			 this.gamePanel.block();//Need to sync the process
 		}
 	}	
 	/**
