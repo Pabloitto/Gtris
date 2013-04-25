@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import com.gtris.components.GamePanel;
 import com.gtris.enums.ColorFigure;
+import com.gtris.factory.FactoryGtris;
 import com.gtris.models.Figure;
 import com.gtris.utilities.Utilities;
 /**
@@ -28,7 +29,7 @@ public class GeneratorTimer extends TimerTask{
 	public void run() {
 		if(!this.gamePanel.isPaused()){
 			 seconds+=2;
-			 int p = Utilities.getRandomNumber(0, 5);
+			 int p = Utilities.getRandomNumber(0, (FactoryGtris.COLS - 1));
 			 Figure first = getNewFigure(p);
 			 this.gamePanel.getOnAir().add(first);
 			 if(p == 5){

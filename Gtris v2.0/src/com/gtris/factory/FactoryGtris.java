@@ -26,8 +26,8 @@ public class FactoryGtris {
 	private Score highScore;
 	private Figure[][] matrix;
 	public static final int SIZE_FIGURE = 32;
-	public static final int ROWS = 12;
-	public static final int COLS = 6;
+	public static final int ROWS = 24;
+	public static final int COLS = 12;
 	
 	
 	

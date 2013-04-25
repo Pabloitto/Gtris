@@ -52,7 +52,7 @@ public class Utilities {
 	  * @return
 	  */
 	 public static int getRandomNumber(int offset , int limit){
-	        return offset + (int)(Math.random() * ((limit - offset) + 1));
+	        return offset + (int)(Math.random() * ((limit - offset)));
 	 }
 	 
 	 /**

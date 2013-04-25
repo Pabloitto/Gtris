@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 import com.gtris.events.KeyBoardEventListener;
+import com.gtris.events.MouseBoardEventListener;
 import com.gtris.sound.SoundManager;
 /**
  * This is the window game
@@ -50,13 +51,14 @@ public final class TetrisFrame extends JFrame{
 	public void loadGame(){
 		this.progressBar.setVisible(false);
 		this.addKeyListener(new KeyBoardEventListener(this.gamePanel));
+		this.addMouseListener(new MouseBoardEventListener(this.gamePanel));
 		this.gamePanel.setVisible(true);
 	}
 	/**
 	 * Set elements to frame
 	 */
 	private void builtFrame(){
-        this.setSize(380, 415);
+        this.setSize(800, 800);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);

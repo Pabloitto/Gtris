@@ -21,6 +21,7 @@ import com.gtris.enums.ControlAlignment;
 import com.gtris.exceptions.GameOverException;
 import com.gtris.factory.FactoryGtris;
 import com.gtris.models.BlockBase;
+import com.gtris.models.Cursor;
 import com.gtris.models.Figure;
 import com.gtris.models.Score;
 import com.gtris.sound.SoundManager;
@@ -78,6 +79,8 @@ public final class GamePanel extends JPanel{
 	
 	public com.gtris.models.Cursor cursor;//Can't create a getter and setter
 	
+	public com.gtris.models.Cursor cursorMouse;
+	
 	private Persistence persistence;
 	
 	
@@ -88,6 +91,8 @@ public final class GamePanel extends JPanel{
 		background = new ImageIcon(getClass().getClassLoader().getResource(levels.get(getLevelStage()))).getImage();
 		factory = FactoryGtris.getInstance();
 		cursor = new com.gtris.models.Cursor();
+		cursorMouse = new Cursor();
+		cursorMouse.setY(0);
         onAir = new CopyOnWriteArrayList<>();
         textStatus = "start";
         firstLoad = true;
@@ -164,6 +169,12 @@ public final class GamePanel extends JPanel{
 				g2d.setStroke(new BasicStroke(5));
 				g2d.drawRect(cursor.getX(), cursor.getY(), cursor.getWidth(), cursor.getHeight());
 			}
+			if(cursorMouse.isActive()){
+				g2d.setColor(Color.ORANGE);
+				g2d.setStroke(new BasicStroke(5));
+				g2d.drawRect(cursorMouse.getX(), cursorMouse.getY(), cursorMouse.getWidth(), cursorMouse.getHeight());
+			}
+			g2d.drawImage(cursorMouse.getImage(), cursorMouse.getX() ,cursorMouse.getY() , cursorMouse.getWidth(), cursorMouse.getHeight(),this);
 			g2d.drawImage(cursor.getImage(), cursor.getX() ,cursor.getY() , cursor.getWidth(), cursor.getHeight(),this);
 			time = getGameTime();
 		}else if(isPaused()){
@@ -231,13 +242,40 @@ public final class GamePanel extends JPanel{
 			y = factory.getRealNodePosition(f.getY());
 			onDown(f, factory.getMatrix()[x][y]);
 		}
-		factory.runAnalizer();
+		//Added
+		if(!this.cursor.isActive()){
+			factory.runAnalizer();
+		}
+	}
+	public void moveSquare(int x, int y , Cursor cursor){
+		
+		int xC = factory.getRealNodePosition(cursor.getX());
+		
+		int yC = factory.getRealNodePosition(cursor.getY());
+		
+		Figure cursorPosition = factory.getMatrix()[xC][yC];
+		
+		Figure newPosition = factory.getMatrix()[x][y];
+		
+		if(newPosition != null && newPosition.getImage() != null){
+			Image oldImage = cursorPosition.getImage(),
+					  newImage = newPosition.getImage();
+			
+			ColorFigure colorOld = cursorPosition.getColor(),
+					    colorNew = newPosition.getColor();
+			
+				newPosition.setImage(oldImage);
+				newPosition.setColor(colorOld);
+				cursorPosition.setImage(newImage);
+				cursorPosition.setColor(colorNew);
+		}
+		
 	}
 	/**
 	 * Move block selected from the cursor
 	 * @param direction direction to move
 	 */
-	public void moveSquare(ControlAlignment direction){
+	public void moveSquare(ControlAlignment direction, Cursor cursor){
 		int x = factory.getRealNodePosition(cursor.getX());
 		int y = factory.getRealNodePosition(cursor.getY());
 		Figure cursorPosition = factory.getMatrix()[x][y];
@@ -268,15 +306,35 @@ public final class GamePanel extends JPanel{
 				cursorPosition.setImage(newImage);
 				cursorPosition.setColor(colorNew);
 		}
-		factory.runAnalizer();
 	}
 	/**
 	 * Verify if  we can active the cursor for move blocks
 	 * @return
 	 */
-	public boolean canActiveCursor(){
+	public boolean canActiveCursor(Cursor cursor){
 		int x = factory.getRealNodePosition(cursor.getX());
 		int y = factory.getRealNodePosition(cursor.getY());
+		Figure cursorPosition = factory.getMatrix()[x][y];
+		return cursorPosition.getImage() != null && cursorPosition.isGround();
+	}
+	public boolean canActiveOnNextNode(ControlAlignment direction){
+		int x = factory.getRealNodePosition(cursor.getX());
+		int y = factory.getRealNodePosition(cursor.getY());
+		
+		switch(direction){
+			case LEFT:
+				x -= 1;
+				break;
+			case RIGHT:
+				x+=1;
+				break;
+			case BOTTOM:
+				y+=1;
+				break;
+			case TOP:
+				y-=1;
+				break;
+		}
 		Figure cursorPosition = factory.getMatrix()[x][y];
 		return cursorPosition.getImage() != null && cursorPosition.isGround();
 	}

@@ -36,38 +36,53 @@ public class KeyBoardEventListener extends KeyAdapter{
 			if(key == KeyEvent.VK_LEFT){
 				if(gamePanel.cursor.getX() > 0){
 					if(gamePanel.cursor.isActive()){
-						gamePanel.moveSquare(ControlAlignment.LEFT);
-						gamePanel.cursor.setActive(false);
+						if(!gamePanel.canActiveOnNextNode(ControlAlignment.LEFT)){
+							return;
+						}
+						gamePanel.moveSquare(ControlAlignment.LEFT , gamePanel.cursor);
+						//gamePanel.cursor.setActive(false);
 					}
 					gamePanel.cursor.move(ControlAlignment.LEFT);
 				}
 			}else if(key == KeyEvent.VK_RIGHT){
 				if(gamePanel.cursor.getX() < gamePanel.getFactory().getWidth()){
 					if(gamePanel.cursor.isActive()){
-						gamePanel.moveSquare(ControlAlignment.RIGHT);
-						gamePanel.cursor.setActive(false);
+						if(!gamePanel.canActiveOnNextNode(ControlAlignment.RIGHT)){
+							return;
+						}
+						gamePanel.moveSquare(ControlAlignment.RIGHT , gamePanel.cursor);
+						//gamePanel.cursor.setActive(false);
 					}
 					gamePanel.cursor.move(ControlAlignment.RIGHT);
 				}
 			}else if(key == KeyEvent.VK_DOWN){
 				if(gamePanel.cursor.getY() < gamePanel.getFactory().getHeight()){
 					if(gamePanel.cursor.isActive()){
-						gamePanel.moveSquare(ControlAlignment.BOTTOM);
-						gamePanel.cursor.setActive(false);
+						if(!gamePanel.canActiveOnNextNode(ControlAlignment.BOTTOM)){
+							return;
+						}
+						gamePanel.moveSquare(ControlAlignment.BOTTOM , gamePanel.cursor);
+						//gamePanel.cursor.setActive(false);
 					}
 					gamePanel.cursor.move(ControlAlignment.BOTTOM);
 				}
 			}else if(key == KeyEvent.VK_UP){
 				if(gamePanel.cursor.getY() > 0){
 					if(gamePanel.cursor.isActive()){
-						gamePanel.moveSquare(ControlAlignment.TOP);
-						gamePanel.cursor.setActive(false);
+						if(!gamePanel.canActiveOnNextNode(ControlAlignment.TOP)){
+							return;
+						}
+						gamePanel.moveSquare(ControlAlignment.TOP , gamePanel.cursor);
+						//gamePanel.cursor.setActive(false);
 					}
 					gamePanel.cursor.move(ControlAlignment.TOP);
 				}
 			}else if(key == KeyEvent.VK_SPACE){
-				if(gamePanel.canActiveCursor()){//Check if the cursor is hover the block valid to move
+				if(gamePanel.canActiveCursor(gamePanel.cursor)){//Check if the cursor is hover the block valid to move
 					gamePanel.cursor.setActive(!gamePanel.cursor.isActive());
+					if(!gamePanel.cursor.isActive()){
+						gamePanel.getFactory().runAnalizer();
+					}
 				}
 			}
 		}
