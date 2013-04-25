@@ -1,6 +1,4 @@
 package com.gtris.enums;
-
-import com.gtris.factory.FactoryGtris;
 import com.gtris.utilities.Utilities;
 /**
  * Enum represent the color for a figure
